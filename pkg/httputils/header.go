@@ -2,7 +2,6 @@ package httputils
 
 import (
 	"context"
-	"errors"
 )
 
 func GetClaims[T any](header string) (*T, error) {
@@ -15,9 +14,9 @@ const (
 	MainHeader HeaderType = "main_header"
 )
 
-func HeaderFromContext[T any](ctx context.Context) (*T, error) {
+func HeaderFromContext[T any](ctx context.Context) *T {
 	if header, ok := ctx.Value(MainHeader).(*T); ok {
-		return header, nil
+		return header
 	}
-	return nil, errors.New("header not found")
+	return nil
 }
