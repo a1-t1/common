@@ -2,14 +2,10 @@ package httputils
 
 import (
 	"context"
+	"errors"
 )
 
-type HeaderContent struct {
-	UserUUID string `json:"uuid"`
-	Role     string `json:"role"`
-}
-
-func GetClaims(header string) (*HeaderContent, error) {
+func GetClaims[T any](header string) (*T, error) {
 	return nil, nil
 }
 
@@ -19,9 +15,9 @@ const (
 	MainHeader HeaderType = "main_header"
 )
 
-func HeaderFromContext(ctx context.Context) *HeaderContent {
-	if header, ok := ctx.Value(MainHeader).(*HeaderContent); ok {
-		return header
+func HeaderFromContext[T any](ctx context.Context) (*T, error) {
+	if header, ok := ctx.Value(MainHeader).(*T); ok {
+		return header, nil
 	}
-	return nil
+	return nil, errors.New("header not found")
 }
