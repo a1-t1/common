@@ -96,3 +96,8 @@ func StartOfDayFormatted(t time.Time) string {
 func EndOfDayFormatted(t time.Time) string {
 	return t.Format("2006-01-02 23:59:59")
 }
+
+// ParseRFC3339 parses a string in RFC3339 format to time.Time
+func ParseRFC3339(t string) (time.Time, error) {
+	return time.Parse(time.RFC3339, t)
+}
