@@ -5,7 +5,10 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"reflect"
+	"strings"
 	"time"
+
+	"github.com/a1-t1/common/pkg/timeutils"
 )
 
 type Date struct {
@@ -47,16 +50,20 @@ func (t *Date) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Date) UnmarshalJSON(data []byte) error {
-	var tm *sql.NullTime
-	if err := json.Unmarshal(data, &tm); err != nil {
-		return err
-	}
-	if tm != nil {
-		t.Valid = true
-		t.Time = tm.Time
-	} else {
+	if string(data) == "null" {
 		t.Valid = false
+		return nil
 	}
+	// since incoming (data) is a string "2006-01-02", we need to remove the quotes and parse it to a time.Time
+	str := string(data)
+	str = strings.Trim(str, "\"")
+	time, err := timeutils.ParseDate(str)
+	if err != nil {
+		t.Valid = false
+		return nil
+	}
+	t.Valid = true
+	t.Time = time
 	return nil
 }
 

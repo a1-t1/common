@@ -47,6 +47,10 @@ func (t *Time) MarshalJSON() ([]byte, error) {
 }
 
 func (t *Time) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" {
+		t.Valid = false
+		return nil
+	}
 	var tm *sql.NullTime
 	if err := json.Unmarshal(data, &tm); err != nil {
 		return err
