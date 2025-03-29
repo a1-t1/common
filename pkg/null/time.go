@@ -39,7 +39,7 @@ func (t Time) Ptr() *time.Time {
 }
 
 // Marshal and unmarshal
-func (t *Time) MarshalJSON() ([]byte, error) {
+func (t Time) MarshalJSON() ([]byte, error) {
 	if !t.Valid {
 		return []byte("null"), nil
 	}
@@ -51,16 +51,19 @@ func (t *Time) UnmarshalJSON(data []byte) error {
 		t.Valid = false
 		return nil
 	}
-	var tm *sql.NullTime
-	if err := json.Unmarshal(data, &tm); err != nil {
+
+	var timeStr string
+	if err := json.Unmarshal(data, &timeStr); err != nil {
 		return err
 	}
-	if tm != nil {
-		t.Valid = true
-		t.Time = tm.Time
-	} else {
-		t.Valid = false
+
+	parsedTime, err := time.Parse("2006-01-02 15:04:05", timeStr)
+	if err != nil {
+		return err
 	}
+
+	t.Time = parsedTime
+	t.Valid = true
 	return nil
 }
 

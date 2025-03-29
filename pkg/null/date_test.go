@@ -8,7 +8,7 @@ import (
 )
 
 func TestUnmarshal(t *testing.T) {
-	s := "2021-01-01"
+	s := `"2021-01-01"`
 	date := Date{}
 	err := json.Unmarshal([]byte(s), &date)
 	if err != nil {
