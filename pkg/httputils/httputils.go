@@ -34,6 +34,19 @@ func ParseStringPTRParamFromQuery(r *http.Request, param string) *string {
 	return &val
 }
 
+func ParseBoolPTRParamFromQuery(r *http.Request, param string) *bool {
+	val := r.URL.Query().Get(param)
+	if val == "" || val == "null" || val == "undefined" {
+		return nil
+	}
+
+	parsedVal, err := strconv.ParseBool(val)
+	if err != nil {
+		return nil
+	}
+	return &parsedVal
+}
+
 func ErrorBadRequest(w http.ResponseWriter, err error) {
 	write(w, StatusBadRequest, map[string]string{"error": err.Error()})
 }
