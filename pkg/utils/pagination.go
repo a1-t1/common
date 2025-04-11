@@ -20,6 +20,12 @@ func (p PaginatedResponse[T]) Nothing() PaginatedResponse[T] {
 
 func (p PaginatedResponse[T]) WithData(data T, total int64, paginationParams *PaginationParams) *PaginatedResponse[T] {
 	p.Data = &data
+	if paginationParams == nil {
+		paginationParams = &PaginationParams{
+			Page:     1,
+			PageSize: 10,
+		}
+	}
 	p.Page = paginationParams.Page
 	p.Size = paginationParams.PageSize
 	p.TotalPages = int(total/paginationParams.PageSize) + 1
