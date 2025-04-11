@@ -20,6 +20,7 @@ const (
 type Router interface {
 	SetupRoutes() *chi.Mux
 	SetupPublicRoutes() *chi.Mux
+	SetupAdminRoutes() *chi.Mux
 }
 
 func DecodeJSON(r *http.Request, v interface{}) error {
