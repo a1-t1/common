@@ -29,6 +29,21 @@ func ParseDatePtr(date string) (*time.Time, error) {
 	return &t, nil
 }
 
+// NowInLocation returns the current time in a specific location
+func NowInLocation(loc string) (time.Time, error) {
+	location, err := time.LoadLocation(loc)
+	if err != nil {
+		return time.Time{}, err
+	}
+	return Now().In(location), nil
+}
+
+// IsValidLocation checks if a location is valid
+func IsValidLocation(loc string) bool {
+	_, err := time.LoadLocation(loc)
+	return err == nil
+}
+
 // Since returns the time since the given time
 func Since(t time.Time) string {
 	now := Now()
