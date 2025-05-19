@@ -47,16 +47,23 @@ func (t *TimeOnly) MarshalJSON() ([]byte, error) {
 }
 
 func (t *TimeOnly) UnmarshalJSON(data []byte) error {
-	var tm *sql.NullTime
-	if err := json.Unmarshal(data, &tm); err != nil {
+	if string(data) == "null" {
+		t.Valid = false
+		return nil
+	}
+
+	var timeStr string
+	if err := json.Unmarshal(data, &timeStr); err != nil {
 		return err
 	}
-	if tm != nil {
-		t.Valid = true
-		t.Time = tm.Time
-	} else {
-		t.Valid = false
+
+	parsedTime, err := time.Parse("15:04:05", timeStr)
+	if err != nil {
+		return err
 	}
+
+	t.Valid = true
+	t.Time = parsedTime
 	return nil
 }
 
