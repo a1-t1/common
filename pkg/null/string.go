@@ -38,7 +38,7 @@ func (s *String) ValueOr(v string) string {
 }
 
 func (s String) Ptr() *string {
-	if !s.Valid {
+	if !s.Valid || (s.Valid && s.String == "") {
 		return nil
 	}
 	return &s.String
