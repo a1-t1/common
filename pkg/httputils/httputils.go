@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"time"
 
+	"github.com/a1-t1/common/pkg/timeutils"
 	"github.com/go-chi/chi/v5"
 )
 
@@ -102,4 +104,28 @@ func ParseInt64PTRParamFromQuery(r *http.Request, key string) *int64 {
 func ParseIntParam(r *http.Request, key string) (int, error) {
 	p := chi.URLParam(r, key)
 	return strconv.Atoi(p)
+}
+
+func ParseDatePTRParamFromQuery(r *http.Request, param string) *time.Time {
+	val := r.URL.Query().Get(param)
+	if val == "" || val == "null" || val == "undefined" {
+		return nil
+	}
+	t, err := timeutils.ParseDate(val)
+	if err != nil {
+		return nil
+	}
+	return &t
+}
+
+func ParseInt64ParamFromQuery(r *http.Request, param string) *int64 {
+	val := r.URL.Query().Get(param)
+	if val == "" || val == "null" || val == "undefined" {
+		return nil
+	}
+	i, err := strconv.ParseInt(val, 10, 64)
+	if err != nil {
+		return nil
+	}
+	return &i
 }
