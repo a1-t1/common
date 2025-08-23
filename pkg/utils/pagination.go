@@ -1,5 +1,7 @@
 package utils
 
+import "math"
+
 type PaginatedResponse[T any] struct {
 	Page       int64 `json:"page"`
 	Size       int64 `json:"size"`
@@ -28,7 +30,7 @@ func (p PaginatedResponse[T]) WithData(data T, total int64, paginationParams *Pa
 	}
 	p.Page = paginationParams.Page
 	p.Size = paginationParams.PageSize
-	p.TotalPages = int(total/paginationParams.PageSize) + 1
+	p.TotalPages = int(math.Ceil(float64(total) / float64(paginationParams.PageSize)))
 	p.Total = total
 	return &p
 }
