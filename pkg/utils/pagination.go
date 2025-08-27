@@ -43,3 +43,11 @@ type PaginationParams struct {
 func (p *PaginationParams) Offset() int64 {
 	return (p.Page - 1) * p.PageSize
 }
+
+type QueryParams struct {
+	PaginationParams
+	Search  string
+	SortBy  string
+	SortDir string
+	Filter  string
+}

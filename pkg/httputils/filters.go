@@ -35,3 +35,28 @@ func ParsePaginationParams(r *http.Request) *utils.PaginationParams {
 		PageSize: limit,
 	}
 }
+
+func ParseQueryParams(r *http.Request) *utils.QueryParams {
+	pp := ParsePaginationParams(r)
+	return &utils.QueryParams{
+		PaginationParams: *pp,
+		Search:           r.URL.Query().Get("search"),
+		SortBy:           r.URL.Query().Get("sort_by"),
+		SortDir:          r.URL.Query().Get("sort_dir"),
+		Filter:           r.URL.Query().Get("filter"),
+	}
+}
+
+// DefaultQueryParams returns sensible defaults
+func DefaultQueryParams() utils.QueryParams {
+	return utils.QueryParams{
+		PaginationParams: utils.PaginationParams{
+			Page:     1,
+			PageSize: 20,
+		},
+		Search:  "",
+		SortBy:  "",
+		SortDir: "",
+		Filter:  "",
+	}
+}
