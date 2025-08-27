@@ -51,3 +51,10 @@ type QueryParams struct {
 	SortDir string
 	Filter  string
 }
+
+func (q *QueryParams) ToPaginationParams() *PaginationParams {
+	return &PaginationParams{
+		Page:     q.Page,
+		PageSize: q.PageSize,
+	}
+}
