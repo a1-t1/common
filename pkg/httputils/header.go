@@ -20,3 +20,10 @@ func HeaderFromContext[T any](ctx context.Context) *T {
 	}
 	return nil
 }
+
+func SpecialHeaderFromContext[T any](ctx context.Context, headerType any) *T {
+	if header, ok := ctx.Value(headerType).(*T); ok {
+		return header
+	}
+	return nil
+}
